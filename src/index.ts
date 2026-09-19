@@ -1,5 +1,5 @@
 /**
- * Host half of the plugin-graph plugin.
+ * Host half of the dependency-graph plugin.
  *
  * It answers one question about the running composition: which plugin provides
  * the services every other plugin injects. The answer is assembled from three
@@ -25,14 +25,14 @@
  * Scope: the HOST runtime only. The browser half is a different Cordis tree with
  * its own `reflect` and its own service names; merging the two would not be a
  * bigger graph, it would be a wrong one.
- * @module dsh-plugin-graph
+ * @module dsh-plugin-dependency-graph
  */
 import type { Context } from '@deepseek-ai/cordis'
 // Type-only merges: these pull in ctx.loader and ctx.webServer.
 import type {} from '@deepseek-ai/cordis-plugin-loader'
 import type {} from '@deepseek-ai/dsh-host-webserver'
 
-export const name = 'plugin-graph'
+export const name = 'dependency-graph'
 
 
 
@@ -54,7 +54,7 @@ import type {
 import { viewerPage } from './viewer-page.ts'
 
 // Re-exported so the module's public face is unchanged by the extraction: the
-// collector moved to its own file, but `import { collectGraph } from 'dsh-plugin-graph'`
+// collector moved to its own file, but `import { collectGraph } from 'dsh-plugin-dependency-graph'`
 // still answers here.
 export { collectGraph }
 export { GRAPH_PATH, VIEWER_PATH }
@@ -80,7 +80,7 @@ const THEME_CSS = fileURLToPath(new URL('./theme.css', import.meta.url))
  * resolution starts from, and the obvious base is the wrong one:
  *
  * This plugin is normally reached through a SYMLINK into a profile's
- * `node_modules` (measured: `~/.dsh/profiles/web/node_modules/dsh-plugin-graph →
+ * `node_modules` (measured: `~/.dsh/profiles/web/node_modules/dsh-plugin-dependency-graph →
  * the checkout`). Node resolves modules from the symlink's TARGET — the checkout
  * — so `createRequire(import.meta.url)` sees the checkout's own dependencies
  * (`@deepseek-ai/*`, which are in its `node_modules`) and NOT the third-party
@@ -96,7 +96,7 @@ const THEME_CSS = fileURLToPath(new URL('./theme.css', import.meta.url))
 function staticBases(): string[] {
   const bases: string[] = [import.meta.url]
   if (process.argv[1] !== undefined) bases.push(process.argv[1])
-  bases.push(join(process.cwd(), 'plugin-graph-resolve.js'))
+  bases.push(join(process.cwd(), 'dependency-graph-resolve.js'))
   return bases
 }
 
@@ -126,7 +126,7 @@ const LEARNED_BASES: string[] = []
  * @param dir - the profile directory, from `profileContext`.
  */
 export function useProfileDirectory(dir: string): void {
-  const base = join(dir, 'plugin-graph-resolve.js')
+  const base = join(dir, 'dependency-graph-resolve.js')
   if (!LEARNED_BASES.includes(base)) LEARNED_BASES.unshift(base)
   DESCRIPTIONS.clear()
 }
@@ -276,7 +276,7 @@ export function apply(ctx: Context): void {
         const graph = collectGraph(scope)
         res.end(JSON.stringify(applyDescriptions(graph, lookupFor(graph))))
       },
-    }), 'plugin-graph: graph route')
+    }), 'dependency-graph: graph route')
 
     // The descriptions on their own, for the page's own tree: it collects the
     // browser graph itself and cannot read `node_modules`, but the packages are
@@ -288,7 +288,7 @@ export function apply(ctx: Context): void {
         res.setHeader('content-type', 'application/json; charset=utf-8')
         res.end(JSON.stringify(lookupFor(collectGraph(scope))))
       },
-    }), 'plugin-graph: descriptions route')
+    }), 'dependency-graph: descriptions route')
 
     scope.effect(() => scope.webServer.register({
       kind: 'exact',
@@ -302,7 +302,7 @@ export function apply(ctx: Context): void {
         const query = new URL(req.url ?? '/', 'http://localhost').searchParams
         res.end(viewerPage(query.get('lang')))
       },
-    }), 'plugin-graph: viewer page')
+    }), 'dependency-graph: viewer page')
 
     scope.effect(() => scope.webServer.register({
       kind: 'exact',
@@ -317,13 +317,13 @@ export function apply(ctx: Context): void {
           // with nothing in the console but a syntax error.
           res.statusCode = 500
           res.setHeader('content-type', 'text/plain; charset=utf-8')
-          res.end(`plugin-graph: viewer script is not built at ${VIEWER_SCRIPT}\n${String(error)}`)
+          res.end(`dependency-graph: viewer script is not built at ${VIEWER_SCRIPT}\n${String(error)}`)
           return
         }
         res.setHeader('content-type', 'text/javascript; charset=utf-8')
         res.end(script)
       },
-    }), 'plugin-graph: viewer script')
+    }), 'dependency-graph: viewer script')
 
     // The design tokens the panel styles itself with — light and dark, both
     // from the theme package. Read per request like the viewer script, so a
@@ -335,7 +335,7 @@ export function apply(ctx: Context): void {
         res.setHeader('content-type', 'text/css; charset=utf-8')
         res.end(readFileSync(THEME_CSS, 'utf8'))
       },
-    }), 'plugin-graph: design tokens')
+    }), 'dependency-graph: design tokens')
 
     // The browser half's tree, one way: the app POSTs what it collected, the
     // viewer GETs it. This exists because the standalone viewer is a document
@@ -351,7 +351,7 @@ export function apply(ctx: Context): void {
           if (clientReport === null) {
             res.statusCode = 404
             res.setHeader('content-type', 'text/plain; charset=utf-8')
-            res.end('plugin-graph: no browser graph has been reported yet\n')
+            res.end('dependency-graph: no browser graph has been reported yet\n')
             return
           }
           res.setHeader('content-type', 'application/json; charset=utf-8')
@@ -383,6 +383,6 @@ export function apply(ctx: Context): void {
           res.end()
         })
       },
-    }), 'plugin-graph: client graph route')
+    }), 'dependency-graph: client graph route')
   })
 }

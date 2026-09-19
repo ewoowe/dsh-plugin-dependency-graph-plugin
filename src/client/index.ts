@@ -1,5 +1,5 @@
 /**
- * Browser half of the plugin-graph plugin.
+ * Browser half of the dependency-graph plugin.
  *
  * One contribution: a read-only settings section showing the host's plugin
  * dependency graph. It is a settings section rather than a conversation view
@@ -57,7 +57,7 @@ export function apply(ctx: Context): void {
         .map(([locale, dict]) => ctx.locale.register(NS, locale, dict)),
     ]
     return () => { for (const dispose of disposers) dispose() }
-  }, 'plugin-graph: dictionaries')
+  }, 'dependency-graph: dictionaries')
 
   // Defined ONCE here rather than inline in the render below: a fresh arrow per
   // render would hand GraphPanel a new `clientGraph` prop each time, which re-runs
@@ -70,7 +70,7 @@ export function apply(ctx: Context): void {
     const t = scope.locale.bind(NS)
     scope.slots.inject('settings.section', () => scope.slots.register({
       name: 'settings.section',
-      id: 'plugin-graph',
+      id: 'dependency-graph',
       // After the shipped sections: a diagnostic surface is not where a reader
       // starts, and it should not push them around either.
       order: 50,

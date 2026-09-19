@@ -16,7 +16,7 @@
  *
  * The rules below are each non-obvious and each was measured; their comments say
  * what went wrong when they were not followed.
- * @module dsh-plugin-graph/collect
+ * @module dsh-plugin-dependency-graph/collect
  */
 import type { Context, Fiber } from '@deepseek-ai/cordis'
 // Type-only merge: pulls in `ctx.loader` without importing the Loader at runtime.
@@ -56,8 +56,8 @@ const ROOT_NODE_ID = '(harness)'
  * The same walk as `loader.locate()` — and deliberately not a call to it, for
  * one reason: `locate()` returns `entry.id`, the qualified tree path, while a
  * node is keyed by `entry.options.id`. Those are different strings (`locate()`
- * answers `include:plugin-graph` for an entry whose `options.id` is
- * `plugin-graph`), so the two cannot be compared directly — doing so silently
+ * answers `include:dependency-graph` for an entry whose `options.id` is
+ * `dependency-graph`), so the two cannot be compared directly — doing so silently
  * drops every nested fiber into a bucket no node ever reads.
  *
  * The Loader stamps `fiber.entry` on a child fiber from its parent context, so

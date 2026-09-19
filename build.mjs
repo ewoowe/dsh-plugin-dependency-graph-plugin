@@ -14,7 +14,7 @@ import { fileURLToPath } from 'node:url'
 import { build } from 'tsdown'
 
 /** Plugin id stamped into the module-loader handoff. */
-const ID = 'dsh-plugin-graph'
+const ID = 'dsh-plugin-dependency-graph'
 
 /**
  * This script's own directory. Every path below is resolved against it rather
@@ -225,12 +225,12 @@ const THEME_SOURCES = [
 ]
 const theme = THEME_SOURCES.find(source => existsSync(source))
 if (theme === undefined) {
-  console.warn('plugin-graph: no design tokens found — the viewer keeps its fallback styles')
+  console.warn('dependency-graph: no design tokens found — the viewer keeps its fallback styles')
 } else {
   copyFileSync(theme, new URL('./lib/theme.css', import.meta.url))
   if (!theme.pathname.includes('/packages/')) {
-    console.warn('plugin-graph: theme.css came from the committed snapshot; refresh assets/ when the host theme changes')
+    console.warn('dependency-graph: theme.css came from the committed snapshot; refresh assets/ when the host theme changes')
   }
 }
 
-console.log('plugin-graph-plugin: built lib/index.js, lib/client.js and lib/viewer.js')
+console.log('dsh-plugin-dependency-graph: built lib/index.js, lib/client.js and lib/viewer.js')

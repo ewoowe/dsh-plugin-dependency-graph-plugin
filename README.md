@@ -15,31 +15,31 @@ The section, as it opens: the counts, the **status row** (a dot per state the gr
 count, and a click that filters to it), the drawing, and the **four-line key** in the corner.
 The controls above the drawing are `← →` (selection history), zoom, reset and fullscreen.
 
-![The plugin graph section](docs/plugin-graph-1-en.png)
+![The plugin graph section](docs/dependency-graph-1-en.png)
 
 Fullscreen. The canvas IS the fullscreen element, so everything the panel put beside it is off
 screen — which is why the toolbar moves to the top line inside the canvas and the search box
 takes the second.
 
-![Fullscreen](docs/plugin-graph-2-en.png)
+![Fullscreen](docs/dependency-graph-2-en.png)
 
 A selected node. Its own description appears under the name, **Listens to** says which events it
 subscribes to, and the wires split by direction — **the key in the corner names which colour is
 which** — dashed where the dependency is only acquired at runtime.
 
-![A node selected](docs/plugin-graph-3-en.png)
+![A node selected](docs/dependency-graph-3-en.png)
 
 Searching. The matches are listed as a card, each row carrying the package and its state, and the
 drawing dims everything else. The `×` in the field clears it and hands the caret back.
 
-![Search results](docs/plugin-graph-4-en.png)
+![Search results](docs/dependency-graph-4-en.png)
 
 The standalone viewer, opened in a new tab: the same graph at the width of a whole window. Here it
 has the **`(harness)`** node selected — the runtime's own row, which carries everything no plugin
 claims: the services the root fiber provides, the services it injects, and the events it listens
 to. It depends on nothing, so it has incoming wires only.
 
-![The standalone viewer](docs/plugin-graph-5-en.png)
+![The standalone viewer](docs/dependency-graph-5-en.png)
 
 ## The two trees
 
@@ -56,13 +56,13 @@ service names, so a merged graph would not be a bigger one — it would be a wro
 Browser tab is a second *source*, not a second set of nodes.
 
 The browser tree cannot be collected by the Node half, so the page is the only thing that can
-describe it: the section POSTs what it collected to `/dsh-plugin-graph/client`, and the viewer
+describe it: the section POSTs what it collected to `/dsh-plugin-dependency-graph/client`, and the viewer
 GETs it back (one path, two methods). The report carries **the instant it was taken**, and the
 viewer prints it — a graph a reader believes is current but is not is worse than one that admits
 its age.
 
 The browser tree's **descriptions** come from a route of their own
-(`/dsh-plugin-graph/descriptions`), because the page cannot read `node_modules` while the packages
+(`/dsh-plugin-dependency-graph/descriptions`), because the page cannot read `node_modules` while the packages
 it is describing are the same ones: this half reads them and serves a name → description table.
 That read is the one place the two halves differ in capability, and it is why the merge lives in
 `src/describe.ts` — pure, so both halves run one implementation, while only the Node half touches
@@ -188,7 +188,7 @@ first: the plugins sit in one interface, so a reader must meet the same terms in
 ## Layout
 
 ```text
-plugin-graph-plugin/
+dsh-plugin-dependency-graph-plugin/
   package.json        dsh.bundle + dsh.client declarations, exports map (private, not published)
   cordis.patch.yml    layer patch: the Loader row
   build.mjs           build script: bundles both halves, and copies the theme at build time
@@ -210,7 +210,7 @@ plugin-graph-plugin/
   docs/                      the screenshots above (chinese variants: `-zh.png`)
 ```
 
-Routes, all under `/dsh-plugin-graph`: the graph itself, `/view` (the page), `/viewer.js`, and
+Routes, all under `/dsh-plugin-dependency-graph`: the graph itself, `/view` (the page), `/viewer.js`, and
 `/theme.css` — plus `/client`, which takes a POST from the app and answers a GET for the viewer,
 and `/descriptions`, which serves the name → description table for the browser tree.
 

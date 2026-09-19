@@ -11,7 +11,7 @@
  * different entry ids (and the browser tree has entries the host never loaded),
  * but a package name means the same thing on both sides — it is the one key a
  * description can be shared under.
- * @module dsh-plugin-graph/describe
+ * @module dsh-plugin-dependency-graph/describe
  */
 import type { PluginGraph } from './graph-types.ts'
 

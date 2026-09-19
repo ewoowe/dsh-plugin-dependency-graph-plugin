@@ -10,7 +10,7 @@
  */
 
 /** Path the graph is served at, shared so neither half restates it. */
-export const GRAPH_PATH = '/dsh-plugin-graph'
+export const GRAPH_PATH = '/dsh-plugin-dependency-graph'
 
 /**
  * Path of the standalone viewer page.
@@ -20,10 +20,10 @@ export const GRAPH_PATH = '/dsh-plugin-graph'
  * inside the app would inherit the same width the reader is trying to get away
  * from.
  */
-export const VIEWER_PATH = '/dsh-plugin-graph/view'
+export const VIEWER_PATH = '/dsh-plugin-dependency-graph/view'
 
 /** Path of the viewer's script, served beside its page and referenced by it. */
-export const VIEWER_SCRIPT_PATH = '/dsh-plugin-graph/viewer.js'
+export const VIEWER_SCRIPT_PATH = '/dsh-plugin-dependency-graph/viewer.js'
 
 /**
  * Path of the design tokens, served beside the viewer page.
@@ -33,7 +33,7 @@ export const VIEWER_SCRIPT_PATH = '/dsh-plugin-graph/viewer.js'
  * the two surfaces share one source of truth. The served page keeps a small
  * fallback of its own for the case where this file is missing.
  */
-export const THEME_CSS_PATH = '/dsh-plugin-graph/theme.css'
+export const THEME_CSS_PATH = '/dsh-plugin-dependency-graph/theme.css'
 
 /**
  * Path the browser half reports its graph to, and the viewer reads it from.
@@ -43,7 +43,7 @@ export const THEME_CSS_PATH = '/dsh-plugin-graph/theme.css'
  * and has no client Cordis of its own — the app is the only half that can see that
  * runtime, so it is the only half that can describe it.
  */
-export const CLIENT_GRAPH_PATH = '/dsh-plugin-graph/client'
+export const CLIENT_GRAPH_PATH = '/dsh-plugin-dependency-graph/client'
 
 /**
  * Path the package descriptions are served at.
@@ -53,7 +53,7 @@ export const CLIENT_GRAPH_PATH = '/dsh-plugin-graph/client'
  * in hand to read descriptions off, yet the packages on that side are the same
  * ones — only `node_modules` is somewhere the page cannot look.
  */
-export const DESCRIPTIONS_PATH = '/dsh-plugin-graph/descriptions'
+export const DESCRIPTIONS_PATH = '/dsh-plugin-dependency-graph/descriptions'
 
 /**
  * One service a plugin injects, and what its declaration gates.

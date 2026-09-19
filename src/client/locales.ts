@@ -1,5 +1,5 @@
 /**
- * Plugin-graph copy.
+ * Dependency-graph copy.
  *
  * `zh` and `en` are the locales the shell ships, so they register together as
  * the typed `Record<BuiltInLocaleId, …>` form. The rest are language-pack
@@ -13,7 +13,7 @@
  */
 
 /** Locale namespace owned by this plugin. */
-export const NS = 'pluginGraph'
+export const NS = 'dependencyGraph'
 
 /** The keys this plugin's two dictionaries carry. */
 export type MessagesKey =
@@ -566,11 +566,11 @@ export type Translate = (key: MessagesKey, params?: Record<string, unknown>) => 
  * Register the namespace with the slot renderer.
  *
  * This merge is what puts the typed `t` seat on the section's props and what lets
- * the registration name `pluginGraph` as its locale: without it, cordis refuses
+ * the registration name `dependencyGraph` as its locale: without it, cordis refuses
  * the registration outright rather than handing the section an unbound translate.
  */
 declare module '@deepseek-ai/dsh-client-ui-slots' {
   interface LocaleNamespaceMap {
-    pluginGraph: MessagesKey
+    dependencyGraph: MessagesKey
   }
 }

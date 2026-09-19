@@ -12,28 +12,28 @@
 分节刚打开的样子：统计胶囊、**状态行**（图上真有的每个状态一颗色点、它的数量，点一下即筛选到它）、
 画面，以及角落里那段**四行图例**。画面上方的控件依次是 `← →`（选中历史）、缩放、重置视图、全屏。
 
-![插件依赖图分节](docs/plugin-graph-1-zh.png)
+![插件依赖图分节](docs/dependency-graph-1-zh.png)
 
 全屏。**画布本身就是全屏元素**，所以面板里放在它旁边的东西在屏幕上都不存在——这正是
 工具栏要移到画布内的第一行、搜索框占第二行的原因。
 
-![全屏](docs/plugin-graph-2-zh.png)
+![全屏](docs/dependency-graph-2-zh.png)
 
 选中一个节点。包名下方是**它自己的描述**，**监听的事件**列出它订阅了哪些事件，
 而连线按方向分开——**两个颜色各是哪一边，看图例**——只在运行时才取的依赖仍然是虚线。
 
-![选中一个节点](docs/plugin-graph-3-zh.png)
+![选中一个节点](docs/dependency-graph-3-zh.png)
 
 搜索。命中的插件列成一张卡片，每行带着包名与它的状态，画面把其余部分变暗。
 输入框里的 `×` 清空查询并把光标交回输入框。
 
-![搜索匹配](docs/plugin-graph-4-zh.png)
+![搜索匹配](docs/dependency-graph-4-zh.png)
 
 新标签页里的独立查看页：同一张图，用整个窗口的宽度。这里选中的是 **`(harness)`** 节点——
 **运行时自己那一行**，承载一切不归属任何插件的条目：根 fiber 提供的服务、它注入的服务、
 以及它监听的事件。它不依赖任何插件，所以只有指向它的线。
 
-![独立查看页](docs/plugin-graph-5-zh.png)
+![独立查看页](docs/dependency-graph-5-zh.png)
 
 ## 两棵树
 
@@ -49,10 +49,10 @@
 而是**错的图**。浏览器那一栏是第二个**来源**，不是第二组节点。
 
 浏览器那棵树无法由 Node 半采集，所以只有页面能描述它：分节把它采集到的结果 POST 到
-`/dsh-plugin-graph/client`，查看页再 GET 回来（一条路径、两个方法）。这份报告带着**采集时刻**，
+`/dsh-plugin-dependency-graph/client`，查看页再 GET 回来（一条路径、两个方法）。这份报告带着**采集时刻**，
 查看页会把它显示出来——一张被读者当成"当前"、其实不是的图，比一张坦白自己几点了的图更糟。
 
-浏览器树的**描述**来自它自己的一条路由（`/dsh-plugin-graph/descriptions`）：页面读不到 `node_modules`，
+浏览器树的**描述**来自它自己的一条路由（`/dsh-plugin-dependency-graph/descriptions`）：页面读不到 `node_modules`，
 而它要描述的那些包正是同一批，所以由 Node 半读出并给出「包名 → 描述」的表。**这是两半能力唯一不同的
 地方**，也是合并逻辑放在 `src/describe.ts` 的原因——它是纯的，两半跑同一份实现，而只有 Node 半碰
 `node:fs`。解析顺序是：先试插件自己的目录，再试从宿主 `profileContext.dir` 学来的基点——实测下来，
@@ -151,7 +151,7 @@
 ## 目录
 
 ```text
-plugin-graph-plugin/
+dsh-plugin-dependency-graph-plugin/
   package.json        dsh.bundle + dsh.client 声明、exports 映射（private，不对外发布）
   cordis.patch.yml    层补丁：插入 Loader 那一行
   build.mjs           构建脚本：打包两半，并在构建期复制主题
@@ -172,7 +172,7 @@ plugin-graph-plugin/
   docs/                      上面那些截图（中文版为 `-zh.png`）
 ```
 
-路由都在 `/dsh-plugin-graph` 之下：图本体、`/view`（页面）、`/viewer.js`、`/theme.css`，
+路由都在 `/dsh-plugin-dependency-graph` 之下：图本体、`/view`（页面）、`/viewer.js`、`/theme.css`，
 `/client`——它接受应用发来的 POST，并应答查看页的 GET——以及 `/descriptions`，
 它给浏览器树提供「包名 → 描述」的表。
 
