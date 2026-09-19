@@ -6,7 +6,7 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/ewoowe/plugin-graph-plugin.git"
+    "url": "git+https://github.com/ewoowe/dsh-plugin-graph-plugin.git"
   },
   "keywords": [
     "dsh",
