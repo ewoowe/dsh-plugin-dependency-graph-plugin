@@ -1,0 +1,9 @@
+# The plugin-graph layer: one insert naming this package. `dsh plugin` adds this
+# package to dsh.profile.bundles because it declares dsh.bundle, and the patch
+# below is what makes the row a mounted Loader entry.
+#
+# No `config` block: this plugin reads the composition it is itself part of, and
+# has nothing of its own to configure.
+- insert:
+    - id: plugin-graph
+      name: 'dsh-plugin-graph'

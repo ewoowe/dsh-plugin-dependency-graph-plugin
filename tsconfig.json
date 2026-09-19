@@ -1,0 +1,30 @@
+{
+  "compilerOptions": {
+    "target": "es2024",
+    "module": "esnext",
+    "moduleResolution": "bundler",
+    "jsx": "react-jsx",
+    "lib": ["ES2024", "DOM", "DOM.Iterable"],
+    "strict": true,
+    "noEmit": true,
+    "skipLibCheck": true,
+    "allowImportingTsExtensions": true,
+    "types": ["node"]
+    // `node`, matching the repo's own check units (tsconfig.base.json and
+    // tsconfig.client.json both carry it, DOM libs and all). The Node half reads
+    // the built viewer script off disk, so it needs `node:fs`; leaving this empty
+    // made that import unresolvable.
+    // No `paths`: every host import resolves from the workspace's own
+    // node_modules, the way it does in a published install.
+    //
+    // Pointing these at `../packages/*/src` instead — the arrangement this
+    // plugin's sibling started with — splits the host's types across two planes:
+    // a package that imports the session types resolves them to its BUILT
+    // `lib/types`, while the mapping hands this plugin the SOURCE. The two
+    // declarations are structurally identical but nominally different, so
+    // `SessionEvent` becomes two incompatible types and every host file in
+    // between fails to compile. It only appears once the workspace has been
+    // built, which is why it can stay invisible for a whole session.
+  },
+  "include": ["src"]
+}

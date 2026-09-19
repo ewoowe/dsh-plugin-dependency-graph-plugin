@@ -1,0 +1,14 @@
+# Installed dependencies: the build resolves them, nothing here is committed.
+node_modules/
+
+# Build output. `lib/` is produced by `npm run build` — by `prepublishOnly` before
+# a publish, and by `prepare` after a git install — so the repository holds
+# sources only and never a stale artifact.
+lib/
+
+# Local `npm pack` output.
+*.tgz
+
+# Editor and OS noise.
+.DS_Store
+*.log
